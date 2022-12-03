@@ -4,12 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
-
-
 
 class MainActivity : AppCompatActivity() {
     private val list = mutableListOf<Todo>()
@@ -20,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        list.addAll(dbHelper.getTodos())
         adapter = RecyclerAdapter(list) {
             dbHelper.removeTodo(list[it].id)
             // адаптеру передали обработчик удаления элемента
@@ -33,15 +30,10 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         val buttonAdd = findViewById<Button>(R.id.button)
 
-
-        list.addAll(dbHelper.getTodos())
-        adapter.notifyDataSetChanged()
-
         buttonAdd.setOnClickListener {
             val text = textIn.text.toString()
-            buttonAdd.text = text
-            val id = dbHelper.add(text)
-            val newTodo = Todo(id, text)
+            val id = dbHelper.add(text, "+7732 ")
+            val newTodo = Todo(id, text,"+7732 ")
             list.add(newTodo)
 
             adapter.notifyItemInserted(list.lastIndex)
